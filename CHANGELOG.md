@@ -21,6 +21,11 @@
 - 增加独立仓库 `.gitignore`。
 - 重写 README，使构建、职责、依赖和历史说明不再依赖原 monorepo 路径。
 - 已补齐独立仓库治理文档，包括 `CHANGELOG.md`、`docs/PROJECT_STATUS.md` 和 `docs/MONOREPO_MIGRATION.md`。
+- 建立独立仓库治理 commit：`ddaa54f1e17863c06f33fd4984d8dc352f96593e`。
+- 对治理 commit 完成独立 clean-shell 回归；构建、接口发现、Python import、配置一致性、Task Catalog 和 `colcon test` 均通过。
+- 回归验证过程中发现验证脚本的 `colcon test-result` 遗漏 `--log-base`，修正验证器后确认仓库根目录不存在 `build/`、`install/` 或 `log/` 构建产物。
+- 建立 annotated tag `interfaces-modularization-baseline-20260826`，固定已验证治理基线 `ddaa54f1e17863c06f33fd4984d8dc352f96593e`。
+- 已审计并删除过滤过程继承的两个旧 Mission Manager branch 和旧 `pre-modularization-20260825` tag；这些 refs 不包含独有 commit。
 
 ### Independent validation
 

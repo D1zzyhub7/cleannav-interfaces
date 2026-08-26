@@ -305,7 +305,7 @@ APP 手动遥控也不属于当前合同范围。
 
 ## 15. 当前模块化治理状态
 
-本治理提交建立并记录以下独立仓库治理内容：
+Interfaces 独立仓库的主体模块化工作已经完成：
 
 - 原 monorepo 安全备份与恢复验证
 - Interfaces 历史只读审计
@@ -326,16 +326,16 @@ APP 手动遥控也不属于当前合同范围。
 - `docs/PROJECT_STATUS.md`
 - `docs/MONOREPO_MIGRATION.md`
 - 五份治理文件总审计
-- 五份治理文件精确 staging
+- 治理 commit `ddaa54f1e17863c06f33fd4984d8dc352f96593e`
+- 治理 commit clean-shell 独立回归验证
+- `interfaces-modularization-baseline-20260826` annotated tag
+- 过滤过程 inherited refs 独立审计
+- inherited refs 清理
 - 业务接口文件零修改验证
 
-本治理提交完成后仍需进行：
+clean-shell 回归中曾发现验证脚本的 `colcon test-result` 未显式指定 `--log-base`，导致验证器在仓库根目录生成 ignored `log/`。该问题已定位为验证脚本缺陷，生成物已精确清理；修正后的命令验证通过，仓库根目录 `build/`、`install/`、`log/` 均不存在。
 
-- clean-shell 独立回归验证
-- 创建 Interfaces 模块化治理 baseline tag
-- 审查并清理过滤后遗留的旧 Mission Manager branch
-- 审查并清理继承的旧 `pre-modularization-20260825` tag
-- 完成 Interfaces G4 最终闭环验证
+本状态更新提交完成后，只剩最终 refs、HEAD、工作区、文档与业务文件边界闭环审计。该审计通过后即可正式关闭 Interfaces G4。
 
 当前尚未进入：
 
@@ -344,9 +344,9 @@ APP 手动遥控也不属于当前合同范围。
 - `cleannav-system` 版本固定
 - `cleannav-navigation` 拆仓
 
-## 16. 遗留 Git refs
+## 16. 遗留 Git refs 清理结果
 
-过滤后目前仍暂时保留以下历史 refs：
+`git-filter-repo` 完成后曾继承以下原 monorepo refs：
 
 `backup/pre-modularization-20260825`
 
@@ -354,13 +354,27 @@ APP 手动遥控也不属于当前合同范围。
 
 `pre-modularization-20260825`
 
-这些 refs 当前都指向：
+它们在 Interfaces 过滤仓库中均最终指向：
 
 `f686d93e1e799aca4e023d0ef4e2bc9f75b8d513`
 
-它们是从原 monorepo 过滤过程继承的审计痕迹，不代表 Interfaces 仓库新的分支策略。
+清理前已经逐项验证：
 
-在新的 Interfaces 治理 commit 与模块化 baseline tag 建立并验证之前，不删除这些旧 refs。
+- 两个 branch 相对 `main` 的独有 commit 数均为 0；
+- inherited tag 的目标相对 `main` 的独有 commit 数为 0；
+- `f686d93e1e799aca4e023d0ef4e2bc9f75b8d513` 仍是 `main` 的祖先；
+- `interfaces-v0.1.0-baseline` 独立固定该历史提取节点；
+- 原 monorepo 的安全 branch、annotated tag 和完整 bundle 均保持有效。
+
+因此上述 3 个 inherited refs 已从 Interfaces 独立仓库删除。
+
+当前本地正式 refs 收敛为：
+
+- branch：`main`
+- tag：`interfaces-v0.1.0-baseline`
+- tag：`interfaces-modularization-baseline-20260826`
+
+原 monorepo 语境中的旧 Mission Manager branch/tag 名称不再作为 Interfaces 仓库的活动 refs。
 
 ## 17. 分支策略
 
@@ -432,18 +446,17 @@ Interfaces 仓库只负责共享合同自身的版本历史。
 
 ## 21. 下一步
 
-本治理提交完成后，Interfaces 模块化按以下顺序收尾：
+本状态更新提交完成后，执行 Interfaces G4 最终闭环审计：
 
-clean-shell 独立回归验证
+- 当前 branch 必须仅为 `main`；
+- 当前正式 tags 必须仅为 `interfaces-v0.1.0-baseline` 和 `interfaces-modularization-baseline-20260826`；
+- HEAD、历史基线 tag 和模块化治理 baseline tag 必须保持精确目标；
+- 工作区必须 clean；
+- 6 个 ROS 2 消息、3 个配置合同、`CMakeLists.txt` 和 `package.xml` 不得因收尾文档更新发生变化；
+- 原 monorepo 安全 branch、tag 与 bundle 必须保持有效。
 
-→ 创建 Interfaces 模块化治理 baseline tag
+上述审计通过后，正式关闭 Interfaces G4。
 
-→ 审查并清理过滤后遗留的旧 branch / tag
-
-→ 执行最终 refs、HEAD、工作区和独立构建验证
-
-→ 正式关闭 Interfaces G4。
-
-Interfaces G4 闭环后，再进入 `cleannav-navigation` 的拆仓工作。
+之后进入 `cleannav-navigation` 的拆仓工作。
 
 GitHub remote 与 push 暂不提前进行，待本地组件仓库治理继续完成后统一处理。

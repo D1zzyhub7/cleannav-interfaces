@@ -393,21 +393,37 @@ tag 说明：
 
 ## 19. 过滤过程继承的旧 refs
 
-`git-filter-repo` 后以下原 monorepo refs 被保留并塌缩到同一个 Interfaces commit：
+`git-filter-repo` 完成后曾保留并塌缩以下原 monorepo refs：
 
-    backup/pre-modularization-20260825
-    feature/mission-manager-m0
-    pre-modularization-20260825
+- `backup/pre-modularization-20260825`
+- `feature/mission-manager-m0`
+- `pre-modularization-20260825`
 
-它们当前均最终指向：
+它们在过滤后的 Interfaces 仓库中均最终指向：
 
-    f686d93e1e799aca4e023d0ef4e2bc9f75b8d513
+`f686d93e1e799aca4e023d0ef4e2bc9f75b8d513`
+
+其中 inherited `pre-modularization-20260825` 为 annotated tag，删除前的 tag object 为：
+
+`8d14f9d84a95db0bcadf6d4606a9406cec183dfd`
 
 这些名称属于原 monorepo 语境，不是新的 Interfaces 分支或 tag 策略。
 
-在独立仓库治理 commit 和新的 modularization baseline tag 建立完成前暂时保留。
+在治理 commit、clean-shell 回归和 `interfaces-modularization-baseline-20260826` 建立完成后，对上述 refs 进行了独立审计：
 
-后续会单独审计并清理，不与业务修改混在同一个步骤中。
+- 两个 branch 相对 `main` 的独有 commit 数均为 0；
+- inherited tag 目标相对 `main` 的独有 commit 数为 0；
+- 历史提取 commit `f686d93e1e799aca4e023d0ef4e2bc9f75b8d513` 仍可由 `main` 到达；
+- `interfaces-v0.1.0-baseline` 独立固定该历史节点；
+- 原 monorepo 安全 branch/tag 和完整安全 bundle 均未受影响。
+
+因此上述 3 个 inherited refs 已从 Interfaces 独立仓库删除。
+
+当前正式本地 refs 为：
+
+- `main`
+- `interfaces-v0.1.0-baseline`
+- `interfaces-modularization-baseline-20260826`
 
 ## 20. 当前 package version
 
@@ -465,7 +481,7 @@ Interfaces 拆分没有修改 Mission Manager 历史或工作树。
 
 ## 24. 后续治理
 
-本迁移记录所在的独立仓库治理提交已经包含：
+Interfaces 独立仓库已经完成：
 
 - README 独立仓库化；
 - `.gitignore`；
@@ -473,18 +489,16 @@ Interfaces 拆分没有修改 Mission Manager 历史或工作树。
 - `docs/PROJECT_STATUS.md`；
 - `docs/MONOREPO_MIGRATION.md`；
 - 治理文件总审计；
-- 五份治理文件精确 staging。
-
-上述治理内容不修改当前 6 个 ROS 2 消息、3 个配置合同或 `package.xml` 的 `0.1.0` 版本。
-
-治理提交完成后剩余的 Interfaces 模块化收尾工作为：
-
+- 治理 commit `ddaa54f1e17863c06f33fd4984d8dc352f96593e`；
 - clean-shell 独立回归验证；
-- 创建 Interfaces modularization baseline tag；
-- 审查并清理过滤过程继承的旧 branch / tag；
-- 完成最终仓库与 refs 审计。
+- `interfaces-modularization-baseline-20260826`；
+- 过滤过程 inherited refs 审计与清理。
 
-这些收尾步骤完成后，Interfaces 模块化 G4 才正式关闭。
+上述工作未修改当前 6 个 ROS 2 消息、3 个配置合同或 `package.xml` 的 `0.1.0` 版本。
+
+clean-shell 回归中的唯一异常来自验证脚本自身：`colcon test-result` 初始调用未指定外部 `--log-base`，因此在仓库根目录生成 ignored `log/`。该目录已在确认内容、时间和 Git 状态后精确删除，修正后的 `test-result` 复验通过，最终仓库本地构建产物检查为 0 failures。
+
+本状态更新完成后，仅执行一次最终仓库闭环审计。通过后 Interfaces 模块化 G4 正式关闭，随后进入 `cleannav-navigation` 的拆仓工作。
 
 ## 25. 系统级回滚原则
 
