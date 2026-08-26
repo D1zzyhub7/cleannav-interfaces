@@ -335,7 +335,7 @@ Interfaces 独立仓库的主体模块化工作已经完成：
 
 clean-shell 回归中曾发现验证脚本的 `colcon test-result` 未显式指定 `--log-base`，导致验证器在仓库根目录生成 ignored `log/`。该问题已定位为验证脚本缺陷，生成物已精确清理；修正后的命令验证通过，仓库根目录 `build/`、`install/`、`log/` 均不存在。
 
-本状态更新提交完成后，只剩最终 refs、HEAD、工作区、文档与业务文件边界闭环审计。该审计通过后即可正式关闭 Interfaces G4。
+Interfaces G4 最终技术闭环审计已经完成。审计结果为 `TOTAL_FAILURES=0`、`G4_8A_RC=0`，HEAD、refs、工作区、业务文件边界、package version、Task Catalog、独立验证证据以及原 monorepo / Mission Manager 安全锚点均通过检查。Interfaces G4 至此正式关闭。
 
 当前尚未进入：
 
@@ -446,17 +446,23 @@ Interfaces 仓库只负责共享合同自身的版本历史。
 
 ## 21. 下一步
 
-本状态更新提交完成后，执行 Interfaces G4 最终闭环审计：
+Interfaces 模块化 G4 已正式关闭。
 
-- 当前 branch 必须仅为 `main`；
-- 当前正式 tags 必须仅为 `interfaces-v0.1.0-baseline` 和 `interfaces-modularization-baseline-20260826`；
-- HEAD、历史基线 tag 和模块化治理 baseline tag 必须保持精确目标；
-- 工作区必须 clean；
-- 6 个 ROS 2 消息、3 个配置合同、`CMakeLists.txt` 和 `package.xml` 不得因收尾文档更新发生变化；
-- 原 monorepo 安全 branch、tag 与 bundle 必须保持有效。
+最终技术闭环审计结果：
 
-上述审计通过后，正式关闭 Interfaces G4。
+- `TOTAL_FAILURES=0`
+- `G4_8A_RC=0`
+- final technical closure：PASS
 
-之后进入 `cleannav-navigation` 的拆仓工作。
+当前 Interfaces 独立仓库保持：
+
+- 正式开发分支：`main`
+- 历史接口基线：`interfaces-v0.1.0-baseline`
+- 已验证模块化治理基线：`interfaces-modularization-baseline-20260826`
+- package version：`0.1.0`
+- 工作区：clean
+- inherited Mission Manager refs：已清理
+
+下一阶段进入 `cleannav-navigation` 的拆仓工作。
 
 GitHub remote 与 push 暂不提前进行，待本地组件仓库治理继续完成后统一处理。
