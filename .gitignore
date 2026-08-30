@@ -12,6 +12,23 @@ __pycache__/
 .coverage
 htmlcov/
 
+# Runtime state
+*.db
+*.db3
+*.sqlite
+*.sqlite3
+*.bag
+rosbag2_*/
+
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
 # Editors
 .vscode/
 .idea/
