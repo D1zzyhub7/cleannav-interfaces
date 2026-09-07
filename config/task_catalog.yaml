@@ -105,7 +105,7 @@ tasks:
     requires_confirmation: false
     description: "清扫最近的落叶堆目标。"
     target_type: LEAF_PILE
-    selection_rule: HIGHEST_PRIORITY_THEN_NEAREST
+    selection_rule: NEAREST_VALID
     wait_timeout_sec: 10.0
     completion_radius_m: 0.40
 
@@ -124,10 +124,10 @@ tasks:
   - id: 33
     name: CLEAN_HIGHEST_PRIORITY_TARGET
     task_kind: MISSION
-    enabled: true
+    enabled: false
     allowed_sources: [VOICE, APP, MOCK]
     requires_confirmation: false
-    description: "清扫最高优先级目标。"
+    description: "当前 CleaningTarget V1 尚无 priority contract，暂不启用。"
     target_type: ANY
     selection_rule: HIGHEST_PRIORITY_THEN_NEAREST
     wait_timeout_sec: 10.0
