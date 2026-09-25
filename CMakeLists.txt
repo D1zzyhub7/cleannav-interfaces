@@ -14,6 +14,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CleaningTarget.msg"
   "msg/CleaningTargetArray.msg"
   "msg/PerceptionHealth.msg"
+  "msg/SafetyStatus.msg"
+  "srv/SafetyLease.srv"
   DEPENDENCIES builtin_interfaces std_msgs geometry_msgs
 )
 
