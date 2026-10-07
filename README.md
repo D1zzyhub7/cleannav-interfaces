@@ -13,8 +13,11 @@
 当前接口语义版本：
 
 ```text
-1.0
+1.1
 ```
+
+NET-OFFLINE-V1 为 `SafetyStatus` 增加 `block_all` 无条件输出互锁字段，
+该消息的 `interface_version` 更新为 `1.1`。
 
 当前决赛阶段冻结基线：
 
@@ -282,6 +285,7 @@ msg/SafetyStatus.msg
 ```text
 emergency_stop_active
 autonomous_enabled
+block_all
 lease_owner_execution_id
 message
 ```
@@ -293,6 +297,8 @@ autonomous_enabled
 ```
 
 表示 Safety 实际允许自动运动。
+
+`block_all` 是独立的无条件输出互锁；为 true 时，Safety Supervisor 必须始终向 /cmd_vel 输出零速度，即使 autonomous_enabled 或 lease 已启用。当前结构版本为 1.1。
 
 ```text
 lease_owner_execution_id
