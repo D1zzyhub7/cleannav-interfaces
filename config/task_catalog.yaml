@@ -132,3 +132,13 @@ tasks:
     selection_rule: HIGHEST_PRIORITY_THEN_NEAREST
     wait_timeout_sec: 10.0
     completion_radius_m: 0.40
+
+  # Allocated from reserved [40,99]; dedicated service only, not HMI V1.
+  - id: 40
+    name: NAVIGATE_TO_POSE
+    task_kind: MISSION
+    enabled: true
+    allowed_sources: [RVIZ]
+    requires_confirmation: false
+    explicit_pose: true
+    description: "受管理的显式 map 位姿导航；不代表清扫完成。"
