@@ -142,3 +142,27 @@ tasks:
     requires_confirmation: false
     explicit_pose: true
     description: "受管理的显式 map 位姿导航；不代表清扫完成。"
+
+  - id: 41
+    name: GOTO_REGION
+    task_kind: MISSION
+    enabled: true
+    allowed_sources: [VOICE, APP, MOCK]
+    requires_confirmation: false
+    description: "通过已配置且绑定当前地图版本的区域入口前往具名区域。"
+
+  - id: 42
+    name: PATROL_REGION
+    task_kind: MISSION
+    enabled: true
+    allowed_sources: [VOICE, APP, MOCK]
+    requires_confirmation: false
+    description: "沿区域内人工审核闭环路线逐航点执行指定轮数；不代表覆盖率或清扫机构完成。"
+
+  - id: 43
+    name: RETURN_CHARGER
+    task_kind: MISSION
+    enabled: true
+    allowed_sources: [VOICE, APP, MOCK]
+    requires_confirmation: false
+    description: "导航到已配置充电位staging pose；不执行自动对接或充电。"
