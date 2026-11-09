@@ -1,0 +1,10 @@
+# 可执行配置模板。空 map 身份与空数组代表“未配置”，不能用于导航。
+# 只有地图发布者确认地图资产后，才填写 map_id/revision/sha256 及区域坐标。
+schema_version: 1
+map:
+  map_id: ""
+  revision: ""
+  sha256: ""
+  frame_id: map
+regions: []
+chargers: []

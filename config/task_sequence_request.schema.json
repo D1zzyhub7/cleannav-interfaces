@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CleanNav Task Sequence Request v1.0",
+  "type": "object",
+  "required": ["interface_version", "sequence_id", "command_id", "source", "timestamp_ms", "valid_for_ms", "map_id", "map_revision", "map_sha256", "steps"],
+  "properties": {
+    "interface_version": {"const": "1.0"},
+    "sequence_id": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "command_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "source": {"enum": [1, 2, 3], "description": "1=VOICE, 2=APP, 3=MOCK"},
+    "timestamp_ms": {"type": "integer", "minimum": 1},
+    "valid_for_ms": {"type": "integer", "minimum": 100, "maximum": 30000},
+    "user_confirmed": {"type": "boolean"},
+    "map_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "map_revision": {"type": "string", "minLength": 1, "maxLength": 64},
+    "map_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "steps": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"$ref": "#/$defs/step"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["step_id", "operation"],
+      "properties": {
+        "step_id": {"type": "string", "minLength": 1, "maxLength": 32, "pattern": "^[A-Za-z0-9._:-]+$"},
+        "operation": {"enum": ["GOTO_REGION", "PATROL_REGION", "RETURN_CHARGER"]},
+        "region_id": {"type": "string", "minLength": 1, "maxLength": 64},
+        "route_id": {"type": "string", "minLength": 1, "maxLength": 64},
+        "laps": {"type": "integer", "minimum": 1, "maximum": 10},
+        "charger_id": {"type": "string", "minLength": 1, "maxLength": 64}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"operation": {"const": "GOTO_REGION"}}, "required": ["operation"]},
+          "then": {"required": ["region_id"], "not": {"anyOf": [{"required": ["route_id"]}, {"required": ["laps"]}, {"required": ["charger_id"]}]}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "PATROL_REGION"}}, "required": ["operation"]},
+          "then": {"required": ["region_id", "laps"], "not": {"required": ["charger_id"]}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "RETURN_CHARGER"}}, "required": ["operation"]},
+          "then": {"required": ["charger_id"], "not": {"anyOf": [{"required": ["region_id"]}, {"required": ["route_id"]}, {"required": ["laps"]}]}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}
